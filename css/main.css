@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+html {
+  height: 100%;
+  width: 100%;
+  scroll-behavior: smooth;
+  font-family: 'Raleway', sans-serif; }
+  html body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(18deg, #023e7d, #faf9f9);
+    background-size: 400% 400%;
+    -webkit-animation: gradient-background 13s ease infinite;
+    animation: gradient-background 13s ease infinite; }
+
+@-webkit-keyframes gradient-background {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 51%; }
+  100% {
+    background-position: 0% 50%; } }
+
+@keyframes gradient-background {
+  0% {
+    background-position: 0% 50%; }
+  50% {
+    background-position: 100% 51%; }
+  100% {
+    background-position: 0% 50%; } }
+    html body article {
+      height: 90%;
+      width: 60%;
+      background: #fdfffc;
+      border-radius: 41px;
+      position: relative;
+      -webkit-box-shadow: -6px 7px 9px 2px rgba(50, 50, 50, 0.55);
+      -moz-box-shadow: -6px 7px 9px 2px rgba(50, 50, 50, 0.55);
+      box-shadow: -6px 7px 9px 2px rgba(50, 50, 50, 0.55);
+      display: flex;
+      justify-content: center; }
+      html body article .header {
+        text-align: center;
+        font-size: 1.4em;
+        margin-top: 8px; }
+        html body article .header h3 {
+          font-weight: 300; }
+        html body article .header p {
+          font-weight: 200; }
+      html body article .submittion-form {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 28px; }
+        html body article .submittion-form form {
+          display: flex;
+          justify-content: center;
+          align-items: center; }
+          html body article .submittion-form form .btn {
+            display: none; }
+          html body article .submittion-form form label {
+            margin-left: 8px; }
+            html body article .submittion-form form label svg {
+              cursor: pointer; }
+          html body article .submittion-form form .input-box {
+            height: 1.8rem;
+            width: 23rem;
+            border-radius: 41px;
+            font-size: 1.2em;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 500;
+            background-color: #fdfffc; }
