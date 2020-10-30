@@ -22,13 +22,14 @@ html {
         @include gradient-background;
         article {
             height: 90%;
-            width: 60%;
+            width: 40%;
             background: $main-color;
-            border-radius: $corner;
+            border-radius: 2px;
             position: relative;
             @include box-shadow;
-            display: flex;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(3, 1fr);
             .header {
                 text-align: center;
                 font-size: 1.4em;
@@ -40,14 +41,59 @@ html {
                     font-weight: 200;
                 }
             }
+            .todo-list {
+                width: 100%;
+                @include center-all;
+                .btn {
+                    display: none;
+                }
+                ul {
+                    list-style-type: none;
+                    width: 100%;
+                    height: 60vh;
+                    padding: 0 15px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    .checkbox {
+                        width: 1.1rem;
+                        height: 1.1rem;
+                        margin-left: 3px;
+                        background: #fff;
+                        -moz-appearance: none;
+                        -webkit-appearance: none;
+                        -o-appearance: none;
+                        border: 1px solid black;
+                        border-radius: 50%;
+                        &:checked {
+                            -webkit-box-shadow: inset 0px 0px 30px 10px rgba(2, 63, 146, 0.5);
+                            box-shadow: inset 0px 0px 30px 10px rgba(2, 63, 146, 0.5);
+                        }
+                    }
+                    .todo-item {
+                        display: grid;
+                        grid-template-columns: 50px 1fr 50px;
+                        grid-template-rows: auto;
+                        padding: 16px 2px;
+                        border-radius: 26px;
+                        grid-row-gap: 21px;
+                        box-shadow: 0 -10px 12px rgb(110, 110, 110);
+                        border: 1px solid gray;
+                        label {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
             .submittion-form {
                 position: absolute;
                 bottom: 0;
-                display: flex;
-                justify-content: center;
+                width: 100%;
+                @include center-all;
                 margin-bottom: 28px;
                 form {
                     @include center-all;
+                    width: 100%;
                     .btn {
                         display: none;
                     }
@@ -59,12 +105,13 @@ html {
                     }
                     .input-box {
                         height: 1.8rem;
-                        width: 23rem;
+                        width: 85%;
                         border-radius: $corner;
                         font-size: 1.2em;
                         font-family: 'Raleway', sans-serif;
                         font-weight: 500;
                         background-color: $main-color;
+                        padding-left: 6px;
                     }
                 }
             }

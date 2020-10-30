@@ -14,7 +14,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(18deg, #023e7d, #faf9f9);
+    background: linear-gradient(18deg, #023F92, #FFB1A4);
     background-size: 400% 400%;
     -webkit-animation: gradient-background 13s ease infinite;
     animation: gradient-background 13s ease infinite; }
@@ -36,15 +36,16 @@ html {
     background-position: 0% 50%; } }
     html body article {
       height: 90%;
-      width: 60%;
+      width: 40%;
       background: #fdfffc;
-      border-radius: 41px;
+      border-radius: 2px;
       position: relative;
       -webkit-box-shadow: -6px 7px 9px 2px rgba(50, 50, 50, 0.55);
       -moz-box-shadow: -6px 7px 9px 2px rgba(50, 50, 50, 0.55);
       box-shadow: -6px 7px 9px 2px rgba(50, 50, 50, 0.55);
-      display: flex;
-      justify-content: center; }
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(3, 1fr); }
       html body article .header {
         text-align: center;
         font-size: 1.4em;
@@ -53,16 +54,58 @@ html {
           font-weight: 300; }
         html body article .header p {
           font-weight: 200; }
+      html body article .todo-list {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center; }
+        html body article .todo-list .btn {
+          display: none; }
+        html body article .todo-list ul {
+          list-style-type: none;
+          width: 100%;
+          height: 60vh;
+          padding: 0 15px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start; }
+          html body article .todo-list ul .checkbox {
+            width: 1.1rem;
+            height: 1.1rem;
+            margin-left: 3px;
+            background: #fff;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            -o-appearance: none;
+            border: 1px solid black;
+            border-radius: 50%; }
+            html body article .todo-list ul .checkbox:checked {
+              -webkit-box-shadow: inset 0px 0px 30px 10px rgba(2, 63, 146, 0.5);
+              box-shadow: inset 0px 0px 30px 10px rgba(2, 63, 146, 0.5); }
+          html body article .todo-list ul .todo-item {
+            display: grid;
+            grid-template-columns: 50px 1fr 50px;
+            grid-template-rows: auto;
+            padding: 16px 2px;
+            border-radius: 26px;
+            grid-row-gap: 21px;
+            box-shadow: 0 -10px 12px #6e6e6e;
+            border: 1px solid gray; }
+            html body article .todo-list ul .todo-item label {
+              cursor: pointer; }
       html body article .submittion-form {
         position: absolute;
         bottom: 0;
+        width: 100%;
         display: flex;
         justify-content: center;
+        align-items: center;
         margin-bottom: 28px; }
         html body article .submittion-form form {
           display: flex;
           justify-content: center;
-          align-items: center; }
+          align-items: center;
+          width: 100%; }
           html body article .submittion-form form .btn {
             display: none; }
           html body article .submittion-form form label {
@@ -71,9 +114,10 @@ html {
               cursor: pointer; }
           html body article .submittion-form form .input-box {
             height: 1.8rem;
-            width: 23rem;
-            border-radius: 41px;
+            width: 85%;
+            border-radius: 12px;
             font-size: 1.2em;
             font-family: 'Raleway', sans-serif;
             font-weight: 500;
-            background-color: #fdfffc; }
+            background-color: #fdfffc;
+            padding-left: 6px; }
