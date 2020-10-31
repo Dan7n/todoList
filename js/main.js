@@ -9,11 +9,8 @@ let newToDo = userTextSubmission.value;
 let ulElement = document.getElementById("ulElement");
 let submitButon = document.getElementById("submitTodo");
 let deleteButton = document.getElementsByClassName("delete");
-
-
-// console.log(deleteButton);
-
-
+let closestLiElement;
+let array = [].slice.call(deleteButton); //convery deleteButton to an array
 
 
 // ifs and fors 
@@ -27,12 +24,13 @@ if (time >= 0 && time < 12) {
 }
 
 //loop to add event listener to all delete buttons
-for (let i = 0; i < deleteButton.length; i++) {
-    deleteButton[i].addEventListener("click", () => {
-        let closestLiElement = deleteButton[i].closest("li");
+for (let i = 0; i < array.length; i++) {
+    array[i].addEventListener("click", () => {
+        closestLiElement = array[i].closest("li");
+        // console.log(array);
         closestLiElement.remove();
     });
-};
+}
 
 //functions
 
@@ -56,9 +54,10 @@ function createNewTodo() {
     pElement.innerText = userTextSubmission.value;
     containerDiv.appendChild(pElement);
     const deleteIcon = document.createElement("label");
-    deleteIcon.classList.add("delete");
     deleteIcon.setAttribute("for", "delete");
+    deleteIcon.classList.add("delete");
     deleteIcon.innerHTML = '<i class="fas fa-trash"></i>';
+    array.push(deleteIcon);
     const btnElement = document.createElement("input");
     btnElement.type = "button";
     btnElement.classList.add("btn");
@@ -68,11 +67,10 @@ function createNewTodo() {
     newLiElement.appendChild(containerDiv);
     ulElement.appendChild(newLiElement);
     userTextSubmission.value = "";
-
-    //testing 
-    // console.log("This is working");
-
-}
+    deleteIcon.addEventListener("click", () => {
+        newLiElement.remove();
+    });
+};
 
 // function deleteTodo() {
 //     const currentTodoList =
@@ -81,8 +79,8 @@ function createNewTodo() {
 
 //event listeners 
 
-inputForm.addEventListener("submit", () => { createNewTodo() });
-submitButon.addEventListener("click", () => { createNewTodo() });
+inputForm.addEventListener("submit", () => { createNewTodo(); });
+submitButon.addEventListener("click", () => { createNewTodo(); });
 
 
 //textbox onfocus, remove placeholder and fram around

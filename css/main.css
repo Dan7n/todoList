@@ -78,6 +78,11 @@ html {
           display: flex;
           flex-direction: column;
           justify-content: flex-start; }
+          html body article .todo-list ul .no-more-tasks {
+            text-align: center;
+            margin-top: 50px;
+            color: gray;
+            font-size: 1.2rem; }
           html body article .todo-list ul .checkbox {
             width: 1.1rem;
             height: 1.1rem;
