@@ -132,5 +132,4 @@ html {
             background-color: #fdfffc;
             padding-left: 6px; }
             html body article .submittion-form form .input-box:before {
-              content: "";
-              border: 1px solid red; }
+              content: ""; }

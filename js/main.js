@@ -10,6 +10,7 @@ let ulElement = document.getElementById("ulElement");
 let submitButon = document.getElementById("submitTodo");
 let deleteButton = document.getElementsByClassName("delete");
 
+
 // console.log(deleteButton);
 
 
@@ -27,7 +28,10 @@ if (time >= 0 && time < 12) {
 
 //loop to add event listener to all delete buttons
 for (let i = 0; i < deleteButton.length; i++) {
-    deleteButton[i].addEventListener("click", () => { console.log("this works") });
+    deleteButton[i].addEventListener("click", () => {
+        let closestLiElement = deleteButton[i].closest("li");
+        closestLiElement.remove();
+    });
 };
 
 //functions
