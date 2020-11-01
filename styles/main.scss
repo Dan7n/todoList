@@ -14,12 +14,8 @@ html {
     body {
         height: 100%;
         width: 100%;
-        // background: url("./../assets/jason-blackeye-ap3LXI0fPJY-unsplash.jpg") no-repeat;
-        // background-position: center center;
-        // background-attachment: scroll;
-        // background-size: cover;
-        @include center-all;
         @include gradient-background;
+        @include center-all;
         article {
             height: 90%;
             width: 35%; //make 35%
@@ -78,15 +74,10 @@ html {
                         font-size: 1.2rem;
                     }
                     .checkbox {
-                        width: 1.1rem;
-                        height: 1.1rem;
+                        height: 1.25rem;
+                        width: 1.25rem;
                         margin-left: 3px;
                         background: #fff;
-                        -moz-appearance: none;
-                        -webkit-appearance: none;
-                        -o-appearance: none;
-                        border: 1px solid black;
-                        border-radius: 50%;
                         &:checked {
                             -webkit-box-shadow: inset 0px 0px 30px 10px rgba(2, 63, 146, 0.5);
                             box-shadow: inset 0px 0px 30px 10px rgba(2, 63, 146, 0.5);
@@ -101,6 +92,12 @@ html {
                         grid-template-rows: auto;
                         padding: 16px 2px;
                         text-align: left;
+                        .completed {
+                            text-decoration: line-through;
+                            opacity: 0.6;
+                            color: #007E33;
+                            border-color: #007E33 !important;
+                        }
                         .fa-trash {
                             color: black;
                             font-size: 1.1rem;

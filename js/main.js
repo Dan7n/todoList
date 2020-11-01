@@ -1,16 +1,22 @@
-let today = new Date();
-let time = today.getHours();
-let date = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
-let datePTag = document.getElementById("todaysDate");
-let timeGreetingHeader = document.getElementById("greetingHeading"); //header tag in the greetings section
-let userTextSubmission = document.getElementById("addTodo");
-let inputForm = document.getElementById("formElement");
-let newToDo = userTextSubmission.value;
-let ulElement = document.getElementById("ulElement");
-let submitButon = document.getElementById("submitTodo");
-let deleteButton = document.getElementsByClassName("delete");
+const today = new Date();
+const time = today.getHours();
+const date = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
+const datePTag = document.getElementById("todaysDate");
+const timeGreetingHeader = document.getElementById("greetingHeading"); //header tag in the greetings section
+const userTextSubmission = document.getElementById("addTodo");
+const inputForm = document.getElementById("formElement");
+const newToDo = userTextSubmission.value;
+const ulElement = document.getElementById("ulElement");
+const submitButon = document.getElementById("submitTodo");
+const deleteButton = document.getElementsByClassName("delete");
 let closestLiElement;
-let array = [].slice.call(deleteButton); //convery deleteButton to an array
+const array = [].slice.call(deleteButton); //convery deleteButton to an array
+const checkBoxes = document.getElementsByClassName("checkbox");
+const checkBoxesArray = [].slice.call(checkBoxes); //checkboxes converted to an array
+// const todoSection = document.getElementById("todoSection");
+// const pTags = document.body.todoSection
+
+// console.log(todoSection);
 
 
 // ifs and fors 
@@ -29,14 +35,23 @@ for (let i = 0; i < array.length; i++) {
         const closestContainer = array[i].closest(".todo-item").classList.add("deleted");
         ulElement.addEventListener("animationend", () => {
             closestLiElement = array[i].closest("li");
-            // console.log(array);
             closestLiElement.remove();
-            // console.log("is this working");
-
         });
-
     });
-}
+};
+
+for (let i = 0; i < checkBoxesArray.length; i++) {
+    let closestPTag = checkBoxesArray[i].nextElementSibling;
+    checkBoxesArray[i].addEventListener("click", () => {
+        if (checkBoxesArray[i].checked === true) {
+            closestPTag.classList.add("completed");
+            closestPTag.nextElementSibling.classList.add("completed");
+        } else if (checkBoxesArray[i].checked === false) {
+            closestPTag.classList.remove("completed");
+            closestPTag.nextElementSibling.classList.remove("completed");
+        };
+    });
+};
 //functions
 
 function printOutDate() {
@@ -72,11 +87,24 @@ function createNewTodo() {
     newLiElement.appendChild(containerDiv);
     ulElement.appendChild(newLiElement);
     userTextSubmission.value = "";
+
+    //when user presses delete icon
     deleteIcon.addEventListener("click", () => {
         containerDiv.classList.add("deleted");
         ulElement.addEventListener("animationend", () => {
             newLiElement.remove();
         });
+    });
+
+    //when user checks a spacific task
+    checkbox.addEventListener("click", () => {
+        if (checkbox.checked === true) {
+            pElement.classList.add("completed");
+            deleteIcon.classList.add("completed");
+        } else {
+            pElement.classList.remove("completed");
+            deleteIcon.classList.remove("completed");
+        };
     });
 };
 
