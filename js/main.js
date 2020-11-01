@@ -26,12 +26,17 @@ if (time >= 0 && time < 12) {
 //loop to add event listener to all delete buttons
 for (let i = 0; i < array.length; i++) {
     array[i].addEventListener("click", () => {
-        closestLiElement = array[i].closest("li");
-        // console.log(array);
-        closestLiElement.remove();
+        const closestContainer = array[i].closest(".todo-item").classList.add("deleted");
+        ulElement.addEventListener("animationend", () => {
+            closestLiElement = array[i].closest("li");
+            // console.log(array);
+            closestLiElement.remove();
+            // console.log("is this working");
+
+        });
+
     });
 }
-
 //functions
 
 function printOutDate() {
@@ -68,20 +73,14 @@ function createNewTodo() {
     ulElement.appendChild(newLiElement);
     userTextSubmission.value = "";
     deleteIcon.addEventListener("click", () => {
-        newLiElement.remove();
+        containerDiv.classList.add("deleted");
+        ulElement.addEventListener("animationend", () => {
+            newLiElement.remove();
+        });
     });
 };
-
-// function deleteTodo() {
-//     const currentTodoList =
-// }
-
 
 //event listeners 
 
 inputForm.addEventListener("submit", () => { createNewTodo(); });
-submitButon.addEventListener("click", () => { createNewTodo(); });
-
-
-//textbox onfocus, remove placeholder and fram around
-//add some color animation to send button
+submitButon.addEventListener("click", () => { createNewTodo(); })
