@@ -7,19 +7,27 @@ const userTextSubmission = document.getElementById("addTodo");
 const inputForm = document.getElementById("formElement");
 const newToDo = userTextSubmission.value;
 const ulElement = document.getElementById("ulElement");
+// const existentSpanTag = document.getElementsByTagName("span");
+const pTagInsideUl = ulElement.getElementsByTagName("p");
 const submitButon = document.getElementById("submitTodo");
 const deleteButton = document.getElementsByClassName("delete");
 let closestLiElement;
 const array = [].slice.call(deleteButton); //convery deleteButton to an array
 const checkBoxes = document.getElementsByClassName("checkbox");
 const checkBoxesArray = [].slice.call(checkBoxes); //checkboxes converted to an array
-// const todoSection = document.getElementById("todoSection");
-// const pTags = document.body.todoSection
+const filterButton = document.getElementById("options");
+const filterButtonOptions = filterButton.querySelectorAll("option");
+const allTodoDivs = document.getElementsByClassName("todo-item");
+// const allTodoDivsArray = [].slice.call(allTodoDivs);
+// const allTodos = allTodoDivs[0].childNodes;
 
-// console.log(todoSection);
+// console.log(allTodoDivsArray[0].childNodes);
+
+console.log(typeof allTodoDivs);
 
 
-// ifs and fors 
+
+// ifs and fors //
 
 if (time >= 0 && time < 12) {
     timeGreetingHeader.innerHTML = "Good morning!";
@@ -32,26 +40,35 @@ if (time >= 0 && time < 12) {
 //loop to add event listener to all delete buttons
 for (let i = 0; i < array.length; i++) {
     array[i].addEventListener("click", () => {
+        closestLiElement = array[i].closest("li");
+        closestLiElement.firstElementChild.classList.add("deleted");
         const closestContainer = array[i].closest(".todo-item").classList.add("deleted");
         ulElement.addEventListener("animationend", () => {
-            closestLiElement = array[i].closest("li");
             closestLiElement.remove();
         });
     });
 };
 
+
+//mark created tasks as complete
 for (let i = 0; i < checkBoxesArray.length; i++) {
     let closestPTag = checkBoxesArray[i].nextElementSibling;
     checkBoxesArray[i].addEventListener("click", () => {
         if (checkBoxesArray[i].checked === true) {
             closestPTag.classList.add("completed");
-            closestPTag.nextElementSibling.classList.add("completed");
+            closestPTag.nextElementSibling.classList.add("label-completed");
+
         } else if (checkBoxesArray[i].checked === false) {
             closestPTag.classList.remove("completed");
-            closestPTag.nextElementSibling.classList.remove("completed");
+            closestPTag.nextElementSibling.classList.remove("label-completed");
+
         };
     });
 };
+
+// for (let i = 0; i < filterButtonOptions.length; i++) {
+//     filterButtonOptions[i].value.addEventListener("click", () => { console.log("shit works") })
+// }
 //functions
 
 function printOutDate() {
@@ -63,6 +80,11 @@ function createNewTodo() {
     event.preventDefault();
     const newLiElement = document.createElement("li"); //create li
     newLiElement.classList.add("list-item");
+    newLiElement.setAttribute("draggable", "true");
+    const spanTag = document.createElement("span");
+    spanTag.classList.add("fas");
+    spanTag.classList.add("fa-bars");
+    newLiElement.appendChild(spanTag);
     const containerDiv = document.createElement("div");
     containerDiv.classList.add("todo-item");
     newLiElement.appendChild(containerDiv);
@@ -91,6 +113,7 @@ function createNewTodo() {
     //when user presses delete icon
     deleteIcon.addEventListener("click", () => {
         containerDiv.classList.add("deleted");
+        spanTag.classList.add("deleted")
         ulElement.addEventListener("animationend", () => {
             newLiElement.remove();
         });
@@ -100,10 +123,10 @@ function createNewTodo() {
     checkbox.addEventListener("click", () => {
         if (checkbox.checked === true) {
             pElement.classList.add("completed");
-            deleteIcon.classList.add("completed");
+            deleteIcon.classList.add("label-completed");
         } else {
             pElement.classList.remove("completed");
-            deleteIcon.classList.remove("completed");
+            deleteIcon.classList.remove("label-completed");
         };
     });
 };
@@ -111,4 +134,5 @@ function createNewTodo() {
 //event listeners 
 
 inputForm.addEventListener("submit", () => { createNewTodo(); });
-submitButon.addEventListener("click", () => { createNewTodo(); })
+submitButon.addEventListener("click", () => { createNewTodo(); });
+// filterButton.addEventListener("change", () => { console.log(`Will fix this in the morning, but the option you clicked on is ${filterButton.value}`) });
