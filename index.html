@@ -17,15 +17,23 @@
             <h3 id="greetingHeading"></h3>
             <p class="">Let's get things done today.</p>
             <div class="container-date">
-                <div>
+                <div class="p-tag-container">
                     <p class="todays-date" id="todaysDate"></p>
                 </div>
-                <div></div>
+                <div class="filter">
+                    <label for="options">Filter By:</label>
+                    <select name="options" id="options">
+                        <option value="all">All Todos</option>
+                        <option value="active">Active</option>
+                        <option value="checked">Checked</option>
+                    </select>
+                </div>
             </div>
         </section>
         <section class="todo-list" id="todoSection">
             <ul id="ulElement">
-                <li class="list-item">
+                <li class="list-item" draggable="true">
+                    <span class="fas fa-bars"></span>
                     <div class="todo-item">
                         <input type="checkbox" class="checkbox">
                         <p>Learn Javascript</p>
@@ -34,7 +42,8 @@
                     </label>
                     </div>
                 </li>
-                <li class="list-item">
+                <li class="list-item" draggable="true">
+                    <span class="fas fa-bars"></span>
                     <div class="todo-item">
                         <input type="checkbox" class="checkbox">
                         <p>Do laundry</p>
@@ -43,7 +52,8 @@
                     </label>
                     </div>
                 </li>
-                <li class="list-item">
+                <li class="list-item" draggable="true">
+                    <span class="fas fa-bars"></span>
                     <div class="todo-item">
                         <input type="checkbox" class="checkbox">
                         <p>Eat food</p>
