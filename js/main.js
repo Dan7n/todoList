@@ -6,8 +6,9 @@ const timeGreetingHeader = document.getElementById("greetingHeading"); //header 
 const userTextSubmission = document.getElementById("addTodo");
 const inputForm = document.getElementById("formElement");
 const newToDo = userTextSubmission.value;
-const ulElement = document.getElementById("ulElement");
-// const existentSpanTag = document.getElementsByTagName("span");
+const todoSection = document.querySelector("#todoSection");
+const ulElement = document.querySelector("#ulElement");
+const hardcodedLiElements = document.querySelectorAll(".list-item") //chose querySelectorAll so that I can use a forEach loop with it
 const pTagInsideUl = ulElement.getElementsByTagName("p");
 const submitButon = document.getElementById("submitTodo");
 const deleteButton = document.getElementsByClassName("delete");
@@ -18,12 +19,9 @@ const checkBoxesArray = [].slice.call(checkBoxes); //checkboxes converted to an 
 const filterButton = document.getElementById("options");
 const filterButtonOptions = filterButton.querySelectorAll("option");
 const allTodoDivs = document.getElementsByClassName("todo-item");
-// const allTodoDivsArray = [].slice.call(allTodoDivs);
-// const allTodos = allTodoDivs[0].childNodes;
+let draggedItem = null;
 
-// console.log(allTodoDivsArray[0].childNodes);
-
-console.log(typeof allTodoDivs);
+console.log(typeof pTagInsideUl);
 
 
 
@@ -66,10 +64,137 @@ for (let i = 0; i < checkBoxesArray.length; i++) {
     });
 };
 
-// for (let i = 0; i < filterButtonOptions.length; i++) {
-//     filterButtonOptions[i].value.addEventListener("click", () => { console.log("shit works") })
+let dragStartIndex;
+
+function dragStart() {
+    // console.log('Event: ', 'dragstart');
+    dragStartIndex = +this.closest('li').getAttribute('data-index');
+}
+
+// let dragindex = 0;
+
+// loop(s) to change order of todo items
+
+hardcodedLiElements.forEach(draggableLi => {
+    draggableLi.addEventListener("dragstart", () => {
+        draggedItem = draggableLi;
+        draggableLi.classList.add("change-order");
+        setTimeout(function() {
+            draggedItem.style.display = "none"
+        }, 0)
+
+    });
+});
+
+hardcodedLiElements.forEach(draggableLi => {
+    draggableLi.addEventListener("dragend", () => {
+        draggableLi.classList.remove("change-order");
+        setTimeout(function() {
+            draggedItem.style.display = "grid"
+            draggedItem = null;
+        }, 0)
+
+    });
+});
+
+hardcodedLiElements.forEach(draggableLi => {
+    draggableLi.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        // console.log("dragover");
+    });
+});
+
+hardcodedLiElements.forEach(draggableLi => {
+    draggableLi.addEventListener("dragenter", (e) => {
+        e.preventDefault();
+        draggableLi.classList.add("drag-over")
+            // console.log("dragenter");
+    });
+});
+
+hardcodedLiElements.forEach(draggableLi => {
+    draggableLi.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        // console.log("dragleave");
+        draggableLi.classList.remove("drag-over")
+    });
+});
+
+
+hardcodedLiElements.forEach(draggableLi => {
+    draggableLi.addEventListener("drop", (e) => {
+        e.preventDefault();
+        switchOnDrop();
+    });
+});
+
+function switchOnDrop() {
+    const liBeingDragged = document.querySelector(".change-order");
+    const liDroppedTo = document.querySelector(".drag-over");
+    liBeingDragged.after(liDroppedTo);
+    // ulElement.insertAfter(liBeingDragged, liDroppedTo);
+};
+
+
+todoSection.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    // const afterElements = mousePosition(ulElement, e.clientY);
+    // const itemBeingDragged = document.querySelector(".change-order"); //select the item currently being dragged
+});
+
+// function mousePosition(container, yPosition) {
+//     const otherDraggableLiElements = [...ulElement.querySelectorAll('li:not(.change-order)')];
+//     // otherDraggableLiElements.reduce(closest, child)
+
+
+
+//     otherDraggableLiElements.reduce(closest, child) => {}
+
+//     return draggableElements.reduce((closest, child) => {
+
+//     }, { offset: Number.NEGATIVE_INFINITY }).element
 // }
-//functions
+// }
+// mousePosition();
+
+
+// ulElement.addEventListener("drop", function(e) {
+//     e.stopPropagation();
+//     console.log("test")
+//     if (dragSrcEl !== this) {
+//         dragSrcEl.innerHTML = this.innerHTML;
+//         this.innerHTML = e.dataTransfer.getData('text/html');
+//     }
+//     return false;
+// });
+
+// ulElement.addEventListener("dragstart", function(e) {
+//     dragSrcEl = this;
+//     e.dataTransfer.effectAllowed = 'move';
+//     e.dataTransfer.setData('text/html', this.innerHTML);
+// });
+
+
+// ulElement.addEventListener("drop", function(e) {
+//     e.preventDefault();
+//     console.log("test");
+// })
+
+
+// hardcodedLiElements.forEach(draggableLi => {
+//     draggableLi.addEventListener("dragover", function(e) {
+//         e.preventDefault();
+//         console.log("test")
+//     });
+
+//     draggableLi.addEventListener("dragenter", function(e) {
+//         e.preventDefault();
+//         console.log("test")
+
+//     });
+
+// })
+
 
 function printOutDate() {
     datePTag.innerHTML = date;
@@ -129,10 +254,16 @@ function createNewTodo() {
             deleteIcon.classList.remove("label-completed");
         };
     });
+
+    newLiElement.addEventListener("dragstart", () => {
+        console.log("this works")
+    })
+
 };
+
+
 
 //event listeners 
 
 inputForm.addEventListener("submit", () => { createNewTodo(); });
 submitButon.addEventListener("click", () => { createNewTodo(); });
-// filterButton.addEventListener("change", () => { console.log(`Will fix this in the morning, but the option you clicked on is ${filterButton.value}`) });
