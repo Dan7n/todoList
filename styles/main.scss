@@ -31,16 +31,19 @@ html {
                 font-size: 1.2rem;
                 padding-top: 8px;
                 height: 70%;
-                margin-bottom: 25px;
+                margin-bottom: 35px;
                 position: relative;
                 .container-date {
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: row-reverse;
                     justify-content: space-between;
                     margin-top: 30px;
-                }
-                .p-tag-container {
-                    margin-left: 8px;
+                    div {
+                        margin: 0 6px;
+                        p {
+                            font-weight: 300;
+                        }
+                    }
                 }
                 .filter {
                     margin-right: 8px;
@@ -49,12 +52,6 @@ html {
                         font-weight: 300;
                     }
                 }
-                // .todays-date {
-                //     font-family: 'Space Mono', monospace;
-                //     position: absolute;
-                //     bottom: 0;
-                //     left: 5px;
-                // }
                 h3 {
                     font-weight: 300;
                 }

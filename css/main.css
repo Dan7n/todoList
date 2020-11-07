@@ -51,15 +51,17 @@ html {
         font-size: 1.2rem;
         padding-top: 8px;
         height: 70%;
-        margin-bottom: 25px;
+        margin-bottom: 35px;
         position: relative; }
         html body article .header .container-date {
           display: flex;
-          flex-direction: row;
+          flex-direction: row-reverse;
           justify-content: space-between;
           margin-top: 30px; }
-        html body article .header .p-tag-container {
-          margin-left: 8px; }
+          html body article .header .container-date div {
+            margin: 0 6px; }
+            html body article .header .container-date div p {
+              font-weight: 300; }
         html body article .header .filter {
           margin-right: 8px; }
           html body article .header .filter label {

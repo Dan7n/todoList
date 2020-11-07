@@ -1,9 +1,11 @@
 const today = new Date();
 const time = today.getHours();
-const date = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate();
+const date = today.getFullYear() + "-" + today.getMonth() + "-" + today.getDate(); //to print out todays date
 const datePTag = document.getElementById("todaysDate");
-const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; //using this to print out todays date using the 
+const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; //using this to print out todays date
+const whatDayIsIt = daysOfWeek[today.getDay()];
 const timeGreetingHeader = document.getElementById("greetingHeading"); //header tag in the greetings section
+const dayOfWeekContainer = document.getElementById("dayOfWeekContainer"); //div where the day of week will be printed
 const userTextSubmission = document.getElementById("addTodo");
 const inputForm = document.getElementById("formElement");
 const newToDo = userTextSubmission.value;
@@ -19,8 +21,6 @@ let closestLiElement;
 const array = [].slice.call(deleteButton); //convery deleteButton to an array
 const checkBoxes = document.getElementsByClassName("checkbox");
 const checkBoxesArray = [].slice.call(checkBoxes); //checkboxes converted to an array
-const filterButton = document.getElementById("options");
-const filterButtonOptions = filterButton.querySelectorAll("option");
 const allTodoDivs = document.getElementsByClassName("todo-item");
 let draggedItem;
 
@@ -63,11 +63,17 @@ for (let i = 0; i < checkBoxesArray.length; i++) {
     });
 };
 
-//function to print out todays date
+//functions to print out todays date
 function printOutDate() {
     datePTag.innerHTML = date;
 }
 printOutDate();
+
+function printOutDayOfWeek() {
+    const dayPTag = document.getElementById("dayOfWeek");
+    dayPTag.innerHTML = whatDayIsIt;
+};
+printOutDayOfWeek();
 
 
 
