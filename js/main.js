@@ -10,9 +10,8 @@ const todoSection = document.querySelector("#todoSection");
 const ulElement = document.querySelector("#ulElement");
 
 let liveLiList = ulElement.getElementsByTagName("li");
-let listOfLiElements = [].slice.call(liveLiList); //startar en tom array som jag sen kommer uppdatera varje gång jag skapar en ny Li tag
-
-const hardcodedLiElements = document.querySelectorAll(".list-item") //chose querySelectorAll so that I can use a forEach loop with it
+// let listOfLiElements = [].slice.call(liveLiList);
+const hardcodedLiElements = document.querySelectorAll(".list-item") //using querySelectorAll so that I can use a forEach loop with it
 const pTagInsideUl = ulElement.getElementsByTagName("p");
 const submitButon = document.getElementById("submitTodo");
 const deleteButton = document.getElementsByClassName("delete");
@@ -23,7 +22,7 @@ const checkBoxesArray = [].slice.call(checkBoxes); //checkboxes converted to an 
 const filterButton = document.getElementById("options");
 const filterButtonOptions = filterButton.querySelectorAll("option");
 const allTodoDivs = document.getElementsByClassName("todo-item");
-let draggedItem = null;
+let draggedItem;
 
 
 // ifs and fors //
@@ -66,18 +65,6 @@ for (let i = 0; i < checkBoxesArray.length; i++) {
 };
 
 let dragStartIndex;
-
-// function uppdateLiArray(newLiElement) {
-//     listOfLiElements.push(newLiElement); //uppdaterar min tomma array varje gång en ny Li skapas
-//     // liArray.push(newArrayItem);
-// }
-
-
-// function dragStart() {
-//     // console.log('Event: ', 'dragstart');
-//     dragStartIndex = +this.closest('li').getAttribute('data-index');
-// }
-
 let dragindex = 0;
 let dropindex = 0;
 let clone = "";
@@ -86,84 +73,94 @@ function drag(e) {
     e.dataTransfer.setData("text", e.target.id);
 };
 
-// loop(s) to change order of todo items
+// functinos to change order of todo items
 
-hardcodedLiElements.forEach(draggableLi => {
-    draggableLi.addEventListener("dragstart", (e) => {
-        e.dataTransfer.setData("text", e.currentTarget.id);
-        // console.log(e.currentTarget);
-        draggedItem = draggableLi;
-        draggableLi.classList.add("change-order");
-        setTimeout(function() {
-            draggedItem.style.display = "none"
-        }, 0)
-    });
-});
 
-hardcodedLiElements.forEach(draggableLi => {
-    draggableLi.addEventListener("dragend", () => {
-        draggableLi.classList.remove("change-order");
-        setTimeout(function() {
-            draggedItem.style.display = "grid"
-            draggedItem = null;
-        }, 0)
+function onDragStart() {
+    for (let i = 0; i < liveLiList.length; i++) {
+        liveLiList[i].addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text", e.currentTarget.id);
+            draggedItem = liveLiList[i];
+            setTimeout(function() {
+                draggedItem.style.opacity = "0.5";
+            }, 0);
+        });
+    };
+};
 
-    });
-});
+function onDragEnd() {
+    for (let i = 0; i < liveLiList.length; i++) {
+        liveLiList[i].addEventListener("dragend", () => {
+            setTimeout(function() {
+                draggedItem.style.opacity = "1";
+            }, 0)
+        })
+    }
+};
 
-hardcodedLiElements.forEach(draggableLi => {
-    draggableLi.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        draggableLi.classList.remove("drag-over")
-            // console.log("dragover");
-    });
-});
+function dragEnter(e) {
+    for (let i = 0; i < liveLiList.length; i++) {
+        liveLiList[i].addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            e.currentTarget.classList.toggle("drag-over");
+            // liveLiList[i].classList.toggle("drag-over")
+        })
+    };
+};
 
-hardcodedLiElements.forEach(draggableLi => {
-    draggableLi.addEventListener("dragenter", (e) => {
-        e.preventDefault();
-        draggableLi.classList.add("drag-over")
-            // console.log("dragenter");
-    });
-});
+//reset default browser behaviour to allow drop
+function dragOver() {
+    for (let i = 0; i < liveLiList.length; i++) {
+        liveLiList[i].addEventListener("dragover", (e) => {
+            e.preventDefault();
+            liveLiList[i].classList.toggle("drag-over")
+            console.log("exit");
+        })
+    }
+}
 
-hardcodedLiElements.forEach(draggableLi => {
-    draggableLi.addEventListener("dragleave", (e) => {
-        e.preventDefault();
-        // console.log("dragleave");
-    });
-});
+//reset class when finishing the drop
+function dropFinish(e) {
+    for (let i = 0; i < liveLiList.length; i++) {
+        liveLiList[i].addEventListener("dragleave", () => {
+            liveLiList[i].classList.toggle("drag-over")
+            if (e.currentTarget.class === "drag-over") {
+                e.currentTarget.classList.remove("drag-over");
+            }
+            console.log("drag finished")
+        });
+    };
+};
 
 function onDrop() {
     for (let i = 0; i < liveLiList.length; i++) {
         liveLiList[i].addEventListener("drop", (e) => {
             e.preventDefault();
-            const removeOnDrop = e.currentTarget; //li elemntet som kommer tas bort efter funktionen körs
+            const removeOnDrop = e.currentTarget; //li element that's gonna be removed later
             clone = e.currentTarget.cloneNode(true);
-            listOfLiElements.push(clone);
-            let data = removeOnDrop.id = "text"; //lägg till ett id attribute, kommer använda detta till att ta bort det elementet om har id="text"
+            let data = removeOnDrop.id = "text"; //adding an id attribute that's gonna later be used to find and delete this element
             let nodeList = ulElement.childNodes;
             for (let x = 0; x < nodeList.length; x++) {
                 if (nodeList[x].id === data) {
-                    dragIndex = nodeList[x];
-                    ulElement.replaceChild(dragIndex, e.currentTarget);
+                    dragindex = nodeList[x];
+                    ulElement.replaceChild(dragindex, e.currentTarget);
                     // listOfLiElements[i].classList.remove("change-order");
-                    let replacedChild = dragIndex.classList.remove("drag-over");
-                    dragIndex.removeAttribute("id");
-                    listOfLiElements.splice(replacedChild);
+                    let replacedChild = dragindex.classList.remove("drag-over");
+                    dragindex.removeAttribute("id");
+                    // listOfLiElements.splice(replacedChild);
                     // console.log(listOfLiElements)
-
-                    ulElement.removeChild(dragIndex);
+                    ulElement.removeChild(dragindex);
                     ulElement.insertBefore(clone, ulElement.childNodes[dragindex]);
+                    evenetListeners();
                 }
-
             };
-
         });
-    }
+    };
+};
 
+function reapplyEvenetListener(element) {
+    element.addEventListener("load", )
 }
-
 
 todoSection.addEventListener("dragover", (e) => {
     e.preventDefault();
@@ -229,10 +226,8 @@ function createNewTodo() {
         };
     });
 
-    newLiElement.addEventListener("dragstart", () => {
-        console.log("this works")
-    })
-
+    newLiElement.addEventListener("dragstart", evenetListeners())
+    spanTag.addEventListener("dragstart", evenetListeners());
 };
 
 
@@ -242,6 +237,20 @@ function createNewTodo() {
 inputForm.addEventListener("submit", () => { createNewTodo(); });
 submitButon.addEventListener("click", () => { createNewTodo(); });
 
+//event listener to change list order
 for (let i = 0; i < liveLiList.length; i++) {
     liveLiList[i].addEventListener("drop", onDrop())
 };
+
+function evenetListeners(e) {
+    for (let i = 0; i < liveLiList.length; i++) {
+        liveLiList[i].addEventListener("dragstart", onDragStart());
+        liveLiList[i].addEventListener("drop", onDrop());
+        liveLiList[i].addEventListener("dragend", onDragEnd());
+        liveLiList[i].addEventListener("dragenter", dragEnter());
+    };
+}
+
+
+
+evenetListeners();

@@ -104,7 +104,8 @@ html {
               margin-right: 3px;
               cursor: pointer; }
           html body article .todo-list ul .drag-over {
-            background-color: #ededed; }
+            background-color: #ededed;
+            padding-left: 6px; }
           html body article .todo-list ul .change-order {
             opacity: 0.5;
             padding-left: 6px;
