@@ -17,6 +17,8 @@ const hardcodedLiElements = document.querySelectorAll(".list-item") //using quer
 const pTagInsideUl = ulElement.getElementsByTagName("p");
 const submitButon = document.getElementById("submitTodo");
 const deleteButton = document.getElementsByClassName("delete");
+const svgIcon = document.getElementById("svgIcon");
+const svgPath = document.getElementById("svgPath");
 let closestLiElement;
 const array = [].slice.call(deleteButton); //convery deleteButton to an array
 const checkBoxes = document.getElementsByClassName("checkbox");
@@ -80,7 +82,7 @@ printOutDayOfWeek();
 // functinos to change order of todo items --------------------------
 
 function onDragStart(e) {
-    this.style.opacity = "0.4";
+    this.style.opacity = "0.6";
     dragSrcEl = this;
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("text/html", this.innerHTML);
@@ -192,6 +194,18 @@ function createNewTodo() {
 
 inputForm.addEventListener("submit", () => { createNewTodo(); });
 submitButon.addEventListener("click", () => { createNewTodo(); });
+
+submitButon.addEventListener("mouseover", () => {
+    svgIcon.setAttribute("height", "1.4rem");
+    svgIcon.setAttribute("width", "1.4rem");
+    svgPath.setAttribute("fill", "#00509d");
+});
+submitButon.addEventListener("mouseout", () => {
+    svgIcon.setAttribute("height", "1.3rem");
+    svgIcon.setAttribute("width", "1.3rem");
+    svgPath.setAttribute("fill", "black");
+});
+
 
 //event listener to change list order
 function evenetListeners(e) {

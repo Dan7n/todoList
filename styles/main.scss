@@ -18,7 +18,7 @@ html {
         @include center-all;
         article {
             height: 90%;
-            width: 35%; //make 35%
+            width: 32%;
             background: $main-color;
             border-radius: 10px;
             position: relative;
@@ -134,31 +134,22 @@ html {
                             border-color: #007E33 !important;
                         }
                         .completed {
-                            position: relative;
+                            text-decoration: line-through;
+                            animation-name: strike-through;
+                            animation-duration: 0.4s;
+                            animation-timing-function: linear;
+                            animation-iteration-count: 1;
+                            animation-fill-mode: forwards;
                             color: #007E33;
-                            border-color: #007E33 !important;
+                            border-bottom: 1px solid #007E33;
                             opacity: 0.6;
                             @keyframes strike-through {
                                 0% {
-                                    width: 0;
+                                    text-decoration-color: transparent;
                                 }
                                 100% {
-                                    width: 85%;
+                                    text-decoration-color: #007E33;
                                 }
-                            }
-                            &::after {
-                                content: "";
-                                position: absolute;
-                                top: 50%;
-                                left: 0;
-                                height: 1px;
-                                width: 85%;
-                                background: #007E33;
-                                animation-name: strike-through;
-                                animation-duration: 0.2s;
-                                animation-timing-function: linear;
-                                animation-iteration-count: 1;
-                                animation-fill-mode: forwards;
                             }
                         }
                         .fa-trash {
@@ -201,6 +192,9 @@ html {
                         margin-left: 8px;
                         svg {
                             cursor: pointer;
+                            &:hover {
+                                fill: red;
+                            }
                         }
                     }
                     .input-box {
@@ -219,5 +213,30 @@ html {
                 }
             }
         }
+    }
+}
+
+@media screen and (max-width: 950px) {
+    article {
+        width: 42% !important;
+    }
+}
+
+@media screen and (max-width: 730px) {
+    article {
+        width: 55% !important;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    article {
+        width: 65% !important;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    article {
+        width: 100% !important;
+        height: 100vh;
     }
 }

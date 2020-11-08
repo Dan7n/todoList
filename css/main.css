@@ -11,7 +11,7 @@ html {
   html body {
     height: 100%;
     width: 100%;
-    background: linear-gradient(18deg, rgba(2, 63, 146, 0.8), rgba(255, 177, 164, 0.8));
+    background: linear-gradient(18deg, rgba(2, 63, 146, 0.7), rgba(255, 177, 164, 0.9));
     background-size: 400% 400%;
     -webkit-animation: gradient-background 13s ease infinite;
     animation: gradient-background 13s ease infinite;
@@ -36,7 +36,7 @@ html {
     background-position: 0% 50%; } }
     html body article {
       height: 90%;
-      width: 35%;
+      width: 32%;
       background: #fdfffc;
       border-radius: 10px;
       position: relative;
@@ -148,29 +148,21 @@ html {
               opacity: 0.6;
               border-color: #007E33 !important; }
             html body article .todo-list ul .todo-item .completed {
-              position: relative;
+              text-decoration: line-through;
+              animation-name: strike-through;
+              animation-duration: 0.4s;
+              animation-timing-function: linear;
+              animation-iteration-count: 1;
+              animation-fill-mode: forwards;
               color: #007E33;
-              border-color: #007E33 !important;
+              border-bottom: 1px solid #007E33;
               opacity: 0.6; }
 
 @keyframes strike-through {
   0% {
-    width: 0; }
+    text-decoration-color: transparent; }
   100% {
-    width: 85%; } }
-              html body article .todo-list ul .todo-item .completed::after {
-                content: "";
-                position: absolute;
-                top: 50%;
-                left: 0;
-                height: 1px;
-                width: 85%;
-                background: #007E33;
-                animation-name: strike-through;
-                animation-duration: 0.2s;
-                animation-timing-function: linear;
-                animation-iteration-count: 1;
-                animation-fill-mode: forwards; }
+    text-decoration-color: #007E33; } }
             html body article .todo-list ul .todo-item .fa-trash {
               color: black;
               font-size: 1.1rem; }
@@ -207,6 +199,8 @@ html {
             margin-left: 8px; }
             html body article .submittion-form form label svg {
               cursor: pointer; }
+              html body article .submittion-form form label svg:hover {
+                fill: red; }
           html body article .submittion-form form .input-box {
             height: 1.8rem;
             width: 85%;
@@ -218,3 +212,20 @@ html {
             padding-left: 6px; }
             html body article .submittion-form form .input-box:before {
               content: ""; }
+
+@media screen and (max-width: 950px) {
+  article {
+    width: 42% !important; } }
+
+@media screen and (max-width: 730px) {
+  article {
+    width: 55% !important; } }
+
+@media screen and (max-width: 550px) {
+  article {
+    width: 65% !important; } }
+
+@media screen and (max-width: 470px) {
+  article {
+    width: 100% !important;
+    height: 100vh; } }
