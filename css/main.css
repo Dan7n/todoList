@@ -93,6 +93,12 @@ html {
           flex-direction: column;
           justify-content: flex-start;
           overflow: auto; }
+          html body article .todo-list ul .onload-text {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-top: 20%;
+            color: gray;
+            font-weight: 300; }
           html body article .todo-list ul li {
             display: grid;
             grid-template-columns: 20px 1fr;

@@ -11,23 +11,19 @@ const inputForm = document.getElementById("formElement");
 const newToDo = userTextSubmission.value;
 const todoSection = document.querySelector("#todoSection");
 const ulElement = document.querySelector("#ulElement");
+const onloadText = document.getElementById("onloadText");
+let nomoreTasks = ""; //gonna be added later when there are no more tasks to show
 let liveLiList = ulElement.getElementsByTagName("li");
 let listOfLiElements = [].slice.call(liveLiList);
-const hardcodedLiElements = document.querySelectorAll(".list-item") //using querySelectorAll so that I can use a forEach loop with it
 const pTagInsideUl = ulElement.getElementsByTagName("p");
 const submitButon = document.getElementById("submitTodo");
 const deleteButton = document.getElementsByClassName("delete");
 const svgIcon = document.getElementById("svgIcon");
 const svgPath = document.getElementById("svgPath");
-let closestLiElement;
-const array = [].slice.call(deleteButton); //convery deleteButton to an array
-const checkBoxes = document.getElementsByClassName("checkbox");
-const checkBoxesArray = [].slice.call(checkBoxes); //checkboxes converted to an array
-const allTodoDivs = document.getElementsByClassName("todo-item");
 let draggedItem;
 
 
-// ifs and fors ------------------------------
+// print out greeting based on time of day
 
 if (time >= 0 && time < 12) {
     timeGreetingHeader.innerHTML = "Good morning!";
@@ -36,34 +32,6 @@ if (time >= 0 && time < 12) {
 } else if (time >= 17 && time <= 23) {
     timeGreetingHeader.innerHTML = "Good evening!";
 }
-
-//loop to add event listener to all delete buttons
-for (let i = 0; i < array.length; i++) {
-    array[i].addEventListener("click", () => {
-        closestLiElement = array[i].closest("li");
-        closestLiElement.firstElementChild.classList.add("deleted");
-        const closestContainer = array[i].closest(".todo-item").classList.add("deleted");
-        ulElement.addEventListener("animationend", () => {
-            closestLiElement.remove();
-        });
-    });
-};
-
-//mark created tasks as complete
-for (let i = 0; i < checkBoxesArray.length; i++) {
-    let closestPTag = checkBoxesArray[i].nextElementSibling;
-    checkBoxesArray[i].addEventListener("click", () => {
-        if (checkBoxesArray[i].checked === true) {
-            closestPTag.classList.add("completed");
-            closestPTag.nextElementSibling.classList.add("label-completed");
-
-        } else if (checkBoxesArray[i].checked === false) {
-            closestPTag.classList.remove("completed");
-            closestPTag.nextElementSibling.classList.remove("label-completed");
-
-        };
-    });
-};
 
 //functions to print out todays date
 function printOutDate() {
@@ -131,9 +99,17 @@ todoSection.addEventListener("dragover", (e) => {
     e.preventDefault();
 });
 
-
+//creating a new todo task
 function createNewTodo() {
     event.preventDefault();
+
+    //remove onload text
+    if (ulElement.contains(onloadText)) {
+        onloadText.remove();
+        document.querySelector("#ulElement").innerHTML = "";
+    };
+    removeIfExists()
+        //create new li element with all componets and append it to the DOM
     const newLiElement = document.createElement("li"); //create li
     newLiElement.classList.add("list-item");
     newLiElement.setAttribute("draggable", "true");
@@ -155,7 +131,7 @@ function createNewTodo() {
     deleteIcon.setAttribute("for", "delete");
     deleteIcon.classList.add("delete");
     deleteIcon.innerHTML = '<i class="fas fa-trash"></i>';
-    array.push(deleteIcon);
+    // array.push(deleteIcon);
     const btnElement = document.createElement("input");
     btnElement.type = "button";
     btnElement.classList.add("btn");
@@ -172,10 +148,11 @@ function createNewTodo() {
         spanTag.classList.add("deleted")
         ulElement.addEventListener("animationend", () => {
             newLiElement.remove();
+            checkIfEmpty();
         });
     });
 
-    //when user checks a spacific task
+    //when user marks task as "completed"
     checkbox.addEventListener("click", () => {
         if (checkbox.checked === true) {
             pElement.classList.add("completed");
@@ -185,8 +162,26 @@ function createNewTodo() {
             deleteIcon.classList.remove("label-completed");
         };
     });
-    //fire the event listeners right after creating a new li element
+    //fire the event listeners right after creating a new li element to activate the drag&drop sotring functionality
     evenetListeners();
+};
+
+//function to check if ul element is empty and create <p> tag if it is
+function checkIfEmpty() {
+    if (ulElement.innerHTML === "") {
+        nomoreTasks = document.createElement("p");
+        nomoreTasks.classList.add("onload-text");
+        nomoreTasks.id = "nomoreTasks";
+        nomoreTasks.innerHTML = "Woho! Looks like you're all done for today!";
+        ulElement.appendChild(nomoreTasks);
+    };
+};
+
+// remove the "you're done for today" text if it exists
+function removeIfExists() {
+    if (ulElement.hasChildNodes("#nomoreTasks")) {
+        ulElement.innerHTML = "";
+    };
 };
 
 
