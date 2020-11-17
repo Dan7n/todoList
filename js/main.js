@@ -98,29 +98,29 @@ todoSection.addEventListener("dragover", (e) => {
     e.preventDefault();
 });
 
-
 //class to create new objects
 class TodoMaker {
-    constructor(inputedText) {
+    constructor(inputedText, index) {
         this.inputedText = inputedText;
+        this.statusChecked = false;
+        this.index = index;
     }
 };
 
+let num = 0;
 //defining a few tasks, then adding them to an array of tasks
-const task_1 = new TodoMaker("Learn Javascript");
-const task_2 = new TodoMaker("Reherse for upcoming gig");
-const task_3 = new TodoMaker("Finish up homework");
+const task_1 = new TodoMaker("Learn Javascript", num++);
+const task_2 = new TodoMaker("Reherse for upcoming gig", num++);
+const task_3 = new TodoMaker("Finish up homework", num++);
 listOfToDos.push(task_1, task_2, task_3);
 loopAndShowOnScreen();
-
-
 
 //create new object, add it to the array
 function createNewTodo() {
     if (userTextSubmission.value === "") {
         alert("Please write something")
     } else {
-        const newTaskObject = new TodoMaker(userTextSubmission.value);
+        const newTaskObject = new TodoMaker(userTextSubmission.value, num++);
         listOfToDos.push(newTaskObject)
         loopAndShowOnScreen()
     };
@@ -135,7 +135,7 @@ function loopAndShowOnScreen() {
     removeIfExists()
 
     //loop through the array and print out any new task
-    listOfToDos.forEach(todo => {
+    for (let i = 0; i < listOfToDos.length; i++) {
         const newLiElement = document.createElement("li");
         newLiElement.classList.add("list-item");
         newLiElement.setAttribute("draggable", "true");
@@ -152,9 +152,10 @@ function loopAndShowOnScreen() {
         checkbox.classList.add("checkbox");
         containerDiv.appendChild(checkbox);
         const pElement = document.createElement("p");
-        pElement.innerText = todo.inputedText;
+        pElement.innerText = listOfToDos[i].inputedText;
         containerDiv.appendChild(pElement);
         const deleteIcon = document.createElement("label");
+        // listOfToDos.push({ this deleteIcon });
         deleteIcon.setAttribute("for", "delete");
         deleteIcon.classList.add("delete");
         deleteIcon.innerHTML = '<i class="fas fa-trash"></i>';
@@ -167,10 +168,10 @@ function loopAndShowOnScreen() {
         newLiElement.appendChild(containerDiv);
         ulElement.appendChild(newLiElement);
         userTextSubmission.value = "";
-
+        console.log(listOfToDos);
         //when user presses delete icon
         deleteIcon.addEventListener("click", () => {
-            listOfToDos.splice(todo, 1);
+            console.log(listOfToDos);
             containerDiv.classList.add("deleted");
             spanTag.classList.add("deleted")
             ulElement.addEventListener("animationend", () => {
@@ -184,6 +185,7 @@ function loopAndShowOnScreen() {
             if (checkbox.checked === true) {
                 pElement.classList.add("completed");
                 deleteIcon.classList.add("label-completed");
+
             } else {
                 pElement.classList.remove("completed");
                 deleteIcon.classList.remove("label-completed");
@@ -191,7 +193,7 @@ function loopAndShowOnScreen() {
         });
         //fire the event listeners right after creating a new li element to activate the drag&drop sotring functionality
         evenetListeners();
-    })
+    }
 };
 
 //function to check if ul element is empty and create <p> tag if it is
@@ -229,6 +231,13 @@ submitButon.addEventListener("mouseout", () => {
     svgPath.setAttribute("fill", "black");
 });
 
+function deleteIconEventListeners() {
+    let deletes = document.getElementsByClassName("delete");
+    for (let i = 0; i < deletes.length; i++) {
+        listOfToDos.splice(i, 1);
+
+    }
+}
 
 //event listener to change list order
 function evenetListeners(e) {
@@ -251,15 +260,3 @@ function numberIncruments() {
     let startNumber = 4;
     return startNumber + 1;
 };
-
-
-// function loopAndPrint() {
-//     for (let i = 0; i < listOfToDos.length; i++) {
-//         listOfToDos[i].createNewTodo;
-//         console.log(listOfToDos[i].inputedText);
-//     };
-// };
-// loopAndPrint();
-
-
-//pushing pre-defined tasks to array
