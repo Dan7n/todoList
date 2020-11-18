@@ -21,6 +21,8 @@ const submitButon = document.getElementById("submitTodo");
 const deleteButton = document.getElementsByClassName("delete");
 const svgIcon = document.getElementById("svgIcon");
 const svgPath = document.getElementById("svgPath");
+const allLabelElements = document.getElementsByClassName("delete");
+let currentElementsId;
 let draggedItem;
 
 // print out greeting based on time of day
@@ -100,10 +102,10 @@ todoSection.addEventListener("dragover", (e) => {
 
 //class to create new objects
 class TodoMaker {
-    constructor(inputedText, index) {
+    constructor(inputedText, uniqueId) {
         this.inputedText = inputedText;
         this.statusChecked = false;
-        this.index = index;
+        this.uniqueId = uniqueId;
     }
 };
 
@@ -159,6 +161,7 @@ function loopAndShowOnScreen() {
         deleteIcon.setAttribute("for", "delete");
         deleteIcon.classList.add("delete");
         deleteIcon.innerHTML = '<i class="fas fa-trash"></i>';
+        deleteIcon.id = listOfToDos[i].uniqueId;
         const btnElement = document.createElement("input");
         btnElement.type = "button";
         btnElement.classList.add("btn");
@@ -169,14 +172,16 @@ function loopAndShowOnScreen() {
         ulElement.appendChild(newLiElement);
         userTextSubmission.value = "";
         console.log(listOfToDos);
+
         //when user presses delete icon
-        deleteIcon.addEventListener("click", () => {
-            console.log(listOfToDos);
+        deleteIcon.addEventListener("click", (event) => {
+            spliceObject()
             containerDiv.classList.add("deleted");
             spanTag.classList.add("deleted")
             ulElement.addEventListener("animationend", () => {
                 newLiElement.remove();
                 checkIfEmpty();
+                console.log(listOfToDos);
             });
         });
 
@@ -195,6 +200,16 @@ function loopAndShowOnScreen() {
         evenetListeners();
     }
 };
+
+//find the object that has the same unique ID as the label being clicked on, then remove it from the array
+function spliceObject() {
+    let currentElementsId = event.target.parentNode.id;
+    let objectToBeDeleted = listOfToDos.filter(object => {
+        return object.uniqueId == currentElementsId;
+    });
+    listOfToDos.splice(objectToBeDeleted, 1);
+};
+
 
 //function to check if ul element is empty and create <p> tag if it is
 function checkIfEmpty() {
