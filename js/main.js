@@ -113,6 +113,11 @@ class TodoMaker {
         this.inputedText = inputedText;
         this.uniqueId = uniqueId;
         this.markedAsComplete = false;
+        this.addLiElement = function addLiElement() {
+            let newLiElement = document.createElement("li");
+            newLiElement.id = uniqueId;
+            return newLiElement;
+        }
         this.addDeleteButton = function addDeleteButton() {
             let deleteIcon = document.createElement("label");
             deleteIcon.id = uniqueId;
@@ -158,7 +163,8 @@ function loopAndShowOnScreen() {
 
     //loop through the array and print out any new task
     for (let i = 0; i < listOfToDos.length; i++) {
-        const newLiElement = document.createElement("li");
+        // const newLiElement = document.createElement("li");
+        const newLiElement = listOfToDos[i].addLiElement();
         newLiElement.classList.add("list-item");
         newLiElement.setAttribute("draggable", "true");
         newLiElement.id = listOfToDos[i].uniqueId;
@@ -191,21 +197,15 @@ function loopAndShowOnScreen() {
         userTextSubmission.value = "";
 
         deleteIcon.addEventListener("click", (event) => {
-            let currentElementsId = event.currentTarget.id;
-            let objectToBeDeleted = listOfToDos.find(object => object.uniqueId == currentElementsId);
-            // console.log(objectToBeDeleted.uniqueId);
-            // console.log(objectToBeDeleted.uniqueId);
+            //find the id of the current delete button, match it with the object's unique Id, and then splice the object and remove the li element
+            let objectToBeDeleted = listOfToDos.find(object => object.uniqueId == event.currentTarget.id);
+            let indexToBeSpliced = listOfToDos.indexOf(objectToBeDeleted);
+            listOfToDos.splice(indexToBeSpliced, 1);
             containerDiv.classList.add("deleted");
             spanTag.classList.add("deleted")
-            let parentLi = event.target.closest("li");
+            event.preventDefault; //so the button can't be clicked more than once while its being deleted
             ulElement.addEventListener("animationend", () => {
-                listOfToDos.splice(objectToBeDeleted, 1);
-
-                // if (currentElementsId == objectToBeDeleted.uniqueId) {
-                // };
-                parentLi.remove();
-
-
+                newLiElement.remove();
                 checkIfEmpty();
             })
         });
@@ -266,13 +266,13 @@ submitButon.addEventListener("mouseout", () => {
     svgPath.setAttribute("fill", "black");
 });
 
-function deleteIconEventListeners() {
-    let deletes = document.getElementsByClassName("delete");
-    for (let i = 0; i < deletes.length; i++) {
-        listOfToDos.splice(i, 1);
+// function deleteIconEventListeners() {
+//     let deletes = document.getElementsByClassName("delete");
+//     for (let i = 0; i < deletes.length; i++) {
+//         listOfToDos.splice(i, 1);
 
-    }
-}
+//     }
+// }
 
 //event listener to change list order
 function evenetListeners(e) {
