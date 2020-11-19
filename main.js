@@ -95,7 +95,6 @@ function dropFinish(e) {
     this.classList.toggle("drag-over")
     if (e.currentTarget.class === "drag-over") {
         e.currentTarget.classList.remove("drag-over");
-        evenetListeners();
     }
 };
 
@@ -107,18 +106,13 @@ todoSection.addEventListener("dragover", (e) => {
 
 //class to create new objects
 
-//adding methods to create delete icons + li elements and assigning them the same uniqueId as the object they're attached to -
-//this is gonna help me find and splice the correct objcet by comparing the li element's id to the object Id
+//adding a method to create delete icons and assigning them the same uniqueId as the object they're attached to -
+//this is gonna help me find and splice the correct objcet by comparing the button Id to the object Id
 class TodoMaker {
     constructor(inputedText, uniqueId) {
         this.inputedText = inputedText;
         this.uniqueId = uniqueId;
         this.markedAsComplete = false;
-        this.addLiElement = function addLiElement() {
-            let newLiElement = document.createElement("li");
-            newLiElement.id = uniqueId;
-            return newLiElement;
-        }
         this.addDeleteButton = function addDeleteButton() {
             let deleteIcon = document.createElement("label");
             deleteIcon.id = uniqueId;
@@ -127,7 +121,7 @@ class TodoMaker {
     };
 };
 
-//number that will be multiplied and used as a unique identifier for every new object/li element/delete button
+let skippedArrayIndexes = [];
 let num = 0;
 
 //defining a few tasks, then adding them to an array of tasks
@@ -135,7 +129,9 @@ let task_1 = new TodoMaker("Learn Javascript", num++);
 let task_2 = new TodoMaker("Reherse for upcoming gig", num++);
 let task_3 = new TodoMaker("Finish up homework", num++);
 listOfToDos.push(task_1, task_2, task_3);
+skippedArrayIndexes.push(task_1, task_2, task_3);
 loopAndShowOnScreen();
+
 
 //create new object, add it to the array
 function createNewTodo() {
@@ -146,10 +142,13 @@ function createNewTodo() {
         listOfToDos.push(newTaskObject)
         loopAndShowOnScreen()
         console.log(listOfToDos)
+
     };
 };
 
+
 function loopAndShowOnScreen() {
+
     //remove onload text
     if (ulElement.contains(onloadText)) {
         onloadText.remove();
@@ -159,8 +158,7 @@ function loopAndShowOnScreen() {
 
     //loop through the array and print out any new task
     for (let i = 0; i < listOfToDos.length; i++) {
-        // const newLiElement = document.createElement("li");
-        const newLiElement = listOfToDos[i].addLiElement();
+        const newLiElement = document.createElement("li");
         newLiElement.classList.add("list-item");
         newLiElement.setAttribute("draggable", "true");
         newLiElement.id = listOfToDos[i].uniqueId;
@@ -175,21 +173,12 @@ function loopAndShowOnScreen() {
         checkbox.type = "checkbox";
         checkbox.classList.add("checkbox");
         containerDiv.appendChild(checkbox);
-        if (listOfToDos[i].markedAsComplete === true) {
-            checkbox.checked = true;
-        }
         const pElement = document.createElement("p");
         pElement.innerText = listOfToDos[i].inputedText;
-        if (listOfToDos[i].markedAsComplete === true) {
-            pElement.classList.add("completed");
-        }
         containerDiv.appendChild(pElement);
         const deleteIcon = listOfToDos[i].addDeleteButton();
         deleteIcon.setAttribute("for", "delete");
         deleteIcon.classList.add("delete");
-        if (listOfToDos[i].markedAsComplete === true) {
-            deleteIcon.classList.add("label-completed")
-        }
         deleteIcon.innerHTML = '<i class="fas fa-trash"></i>';
         const btnElement = document.createElement("input");
         btnElement.type = "button";
@@ -201,45 +190,45 @@ function loopAndShowOnScreen() {
         ulElement.appendChild(newLiElement);
         userTextSubmission.value = "";
 
-        //we user clickes the trashcan icon
         deleteIcon.addEventListener("click", (event) => {
-            //find the id of the current delete button, match it with the object's unique Id, and then splice the object and remove the li element
-            let objectToBeDeleted = listOfToDos.find(object => object.uniqueId == event.currentTarget.id);
-            let indexToBeSpliced = listOfToDos.indexOf(objectToBeDeleted);
-            listOfToDos.splice(indexToBeSpliced, 1);
+            let currentElementsId = event.currentTarget.id;
+            let objectToBeDeleted = listOfToDos.find(object => object.uniqueId == currentElementsId);
+            // console.log(objectToBeDeleted.uniqueId);
+            // console.log(objectToBeDeleted.uniqueId);
             containerDiv.classList.add("deleted");
             spanTag.classList.add("deleted")
-            event.preventDefault; //so the button can't be clicked more than once while its being deleted
+            let parentLi = event.target.closest("li");
             ulElement.addEventListener("animationend", () => {
-                newLiElement.remove();
+                listOfToDos.splice(objectToBeDeleted, 1);
+
+                // if (currentElementsId == objectToBeDeleted.uniqueId) {
+                // };
+                parentLi.remove();
+
+
                 checkIfEmpty();
             })
         });
 
+
         //when user marks task as "completed"
-        checkbox.addEventListener("click", () => {
-            if (checkbox.checked === true) {
+        checkbox.addEventListener("click", markAsComplete);
+
+        function markAsComplete() {
+            if (listOfToDos[i].markedAsComplete === false) {
                 listOfToDos[i].markedAsComplete = true;
                 pElement.classList.add("completed");
                 deleteIcon.classList.add("label-completed");
-            } else {
+            } else if (listOfToDos[i].markedAsComplete === true) {
                 listOfToDos[i].markedAsComplete = false;
                 pElement.classList.remove("completed");
                 deleteIcon.classList.remove("label-completed");
             };
-        });
-
+        };
         //fire the event listeners right after creating a new li element to activate the drag&drop sotring functionality
         evenetListeners();
     };
 };
-
-
-function addClass(element, currentIndex) {
-    if (currentIndex.markedAsComplete === true) {
-        element.classList.add("completed");
-    };
-}
 
 
 //function to check if ul element is empty and create <p> tag if it is
@@ -277,13 +266,13 @@ submitButon.addEventListener("mouseout", () => {
     svgPath.setAttribute("fill", "black");
 });
 
-// function deleteIconEventListeners() {
-//     let deletes = document.getElementsByClassName("delete");
-//     for (let i = 0; i < deletes.length; i++) {
-//         listOfToDos.splice(i, 1);
+function deleteIconEventListeners() {
+    let deletes = document.getElementsByClassName("delete");
+    for (let i = 0; i < deletes.length; i++) {
+        listOfToDos.splice(i, 1);
 
-//     }
-// }
+    }
+}
 
 //event listener to change list order
 function evenetListeners(e) {
