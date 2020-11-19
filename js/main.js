@@ -112,6 +112,7 @@ class TodoMaker {
     constructor(inputedText, uniqueId) {
         this.inputedText = inputedText;
         this.uniqueId = uniqueId;
+        this.markedAsComplete = false;
         this.addDeleteButton = function addDeleteButton() {
             let deleteIcon = document.createElement("label");
             deleteIcon.id = uniqueId;
@@ -140,12 +141,14 @@ function createNewTodo() {
         const newTaskObject = new TodoMaker(userTextSubmission.value, num++);
         listOfToDos.push(newTaskObject)
         loopAndShowOnScreen()
+        console.log(listOfToDos)
 
     };
 };
 
 
 function loopAndShowOnScreen() {
+
     //remove onload text
     if (ulElement.contains(onloadText)) {
         onloadText.remove();
@@ -155,18 +158,14 @@ function loopAndShowOnScreen() {
 
     //loop through the array and print out any new task
     for (let i = 0; i < listOfToDos.length; i++) {
-
-        if (skippedArrayIndexes.includes(i)) {
-            continue;
-        }
         const newLiElement = document.createElement("li");
         newLiElement.classList.add("list-item");
         newLiElement.setAttribute("draggable", "true");
+        newLiElement.id = listOfToDos[i].uniqueId;
         const spanTag = document.createElement("span");
         spanTag.classList.add("fas");
         spanTag.classList.add("fa-bars");
         newLiElement.appendChild(spanTag);
-        //create the div container and the p and span tags inside it
         const containerDiv = document.createElement("div");
         containerDiv.classList.add("todo-item");
         newLiElement.appendChild(containerDiv);
@@ -191,45 +190,44 @@ function loopAndShowOnScreen() {
         ulElement.appendChild(newLiElement);
         userTextSubmission.value = "";
 
-        // deleteIcon.addEventListener("click", removeFromList(deleteIcon, listOfToDos[i], containerDiv, spanTag));
         deleteIcon.addEventListener("click", (event) => {
             let currentElementsId = event.currentTarget.id;
-            // let objectToBeDeleted = listOfToDos.filter(object => object.uniqueId === currentElementsId);
             let objectToBeDeleted = listOfToDos.find(object => object.uniqueId == currentElementsId);
-            console.log(objectToBeDeleted.uniqueId);
+            // console.log(objectToBeDeleted.uniqueId);
+            // console.log(objectToBeDeleted.uniqueId);
             containerDiv.classList.add("deleted");
             spanTag.classList.add("deleted")
             let parentLi = event.target.closest("li");
             ulElement.addEventListener("animationend", () => {
+                listOfToDos.splice(objectToBeDeleted, 1);
+
+                // if (currentElementsId == objectToBeDeleted.uniqueId) {
+                // };
                 parentLi.remove();
-                if (currentElementsId == objectToBeDeleted.uniqueId) {
-                    listOfToDos.splice(i, 1);
-                };
+
+
                 checkIfEmpty();
             })
         });
 
 
         //when user marks task as "completed"
-        checkbox.addEventListener("click", () => {
-            if (checkbox.checked === true) {
+        checkbox.addEventListener("click", markAsComplete);
+
+        function markAsComplete() {
+            if (listOfToDos[i].markedAsComplete === false) {
+                listOfToDos[i].markedAsComplete = true;
                 pElement.classList.add("completed");
                 deleteIcon.classList.add("label-completed");
-
-            } else {
+            } else if (listOfToDos[i].markedAsComplete === true) {
+                listOfToDos[i].markedAsComplete = false;
                 pElement.classList.remove("completed");
                 deleteIcon.classList.remove("label-completed");
             };
-        });
+        };
         //fire the event listeners right after creating a new li element to activate the drag&drop sotring functionality
         evenetListeners();
-
-        // }
-        // if (listOfToDos[i].uniqueId === i) {
-        //     i++;
-        // } else {}
-
-    }
+    };
 };
 
 
