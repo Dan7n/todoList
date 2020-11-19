@@ -27,7 +27,7 @@ let draggedItem;
 let arrayOfIds = [];
 
 
-// print out greeting based on time of day
+// print out greeting based on time of day -----------------
 if (time >= 0 && time < 12) {
     timeGreetingHeader.innerHTML = "Good morning!";
 } else if (time >= 12 && time <= 17) {
@@ -36,7 +36,7 @@ if (time >= 0 && time < 12) {
     timeGreetingHeader.innerHTML = "Good evening!";
 }
 
-//functions to print out todays date
+//functions to print out todays date ------------
 function printOutDate() {
     datePTag.innerHTML = date;
 }
@@ -102,7 +102,10 @@ todoSection.addEventListener("dragover", (e) => {
     e.preventDefault();
 });
 
+//--------------------------------------------
+
 //class to create new objects
+
 //adding a method to create delete icons and assigning them the same uniqueId as the object they're attached to -
 //this is gonna help me find and splice the correct objcet by comparing the button Id to the object Id
 class TodoMaker {
@@ -117,22 +120,27 @@ class TodoMaker {
     };
 };
 
+let skippedArrayIndexes = [];
 let num = 0;
+
 //defining a few tasks, then adding them to an array of tasks
 let task_1 = new TodoMaker("Learn Javascript", num++);
 let task_2 = new TodoMaker("Reherse for upcoming gig", num++);
 let task_3 = new TodoMaker("Finish up homework", num++);
 listOfToDos.push(task_1, task_2, task_3);
+skippedArrayIndexes.push(task_1, task_2, task_3);
 loopAndShowOnScreen();
+
 
 //create new object, add it to the array
 function createNewTodo() {
     if (userTextSubmission.value === "") {
-        alert("Please write something")
+        alert("Please write something to continue 😊")
     } else {
         const newTaskObject = new TodoMaker(userTextSubmission.value, num++);
         listOfToDos.push(newTaskObject)
-        loopAndShowOnScreen(newTaskObject)
+        loopAndShowOnScreen()
+
     };
 };
 
@@ -144,11 +152,13 @@ function loopAndShowOnScreen() {
         document.querySelector("#ulElement").innerHTML = "";
     };
     removeIfExists()
-        //loop through the array and print out any new task
+
+    //loop through the array and print out any new task
     for (let i = 0; i < listOfToDos.length; i++) {
 
-        // if (typeof listOfToDos[i] === "object") {
-        // console.log(typeof listOfToDos[i])
+        if (skippedArrayIndexes.includes(i)) {
+            continue;
+        }
         const newLiElement = document.createElement("li");
         newLiElement.classList.add("list-item");
         newLiElement.setAttribute("draggable", "true");
@@ -180,25 +190,21 @@ function loopAndShowOnScreen() {
         newLiElement.appendChild(containerDiv);
         ulElement.appendChild(newLiElement);
         userTextSubmission.value = "";
+
         // deleteIcon.addEventListener("click", removeFromList(deleteIcon, listOfToDos[i], containerDiv, spanTag));
         deleteIcon.addEventListener("click", (event) => {
             let currentElementsId = event.currentTarget.id;
             // let objectToBeDeleted = listOfToDos.filter(object => object.uniqueId === currentElementsId);
             let objectToBeDeleted = listOfToDos.find(object => object.uniqueId == currentElementsId);
             console.log(objectToBeDeleted.uniqueId);
-            if (currentElementsId == objectToBeDeleted.uniqueId) {
-                listOfToDos.splice(objectToBeDeleted, 1);
-            }
-
-
-
-
-            console.log(listOfToDos)
             containerDiv.classList.add("deleted");
             spanTag.classList.add("deleted")
             let parentLi = event.target.closest("li");
             ulElement.addEventListener("animationend", () => {
                 parentLi.remove();
+                if (currentElementsId == objectToBeDeleted.uniqueId) {
+                    listOfToDos.splice(i, 1);
+                };
                 checkIfEmpty();
             })
         });
@@ -225,38 +231,6 @@ function loopAndShowOnScreen() {
 
     }
 };
-
-//find the object that has the same unique ID as the event starter, and splice it form the array
-// function spliceObject() {
-
-
-//     let currentElementsId = event.target.id;
-//     let objectToBeDeleted = listOfToDos.filter(object => {
-//         return object.uniqueId == currentElementsId;
-//     });
-
-//     console.log(currentElementsId);
-//     if (currentElementsId == objectToBeDeleted) {
-//         listOfToDos.splice(objectToBeDeleted, 1);
-//     }
-// }
-
-// spliceObject()
-
-
-
-// function removeFromList(deleteIcon, currentObject, containerDiv, spanTag, event) {
-
-//     // for (let i = 0; i < deleteButton.length; i++) {
-//     // console.log(listOfToDos[i].uniqueId)
-//     // currentObject = listOfToDos.filter(objectFinder(listOfToDos[i].uniqueId, buttonId));
-//     console.log(currentObject)
-//         // }
-// }
-
-// function objectFinder(num, buttonId) {
-//     return (num == buttonId)
-// }
 
 
 //function to check if ul element is empty and create <p> tag if it is
